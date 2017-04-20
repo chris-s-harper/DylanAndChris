@@ -1,15 +1,29 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CameraFollowScript : MonoBehaviour {
+public class CameraFollowScript : MonoBehaviour
+{
+    [SerializeField]
+    private GameObject player;
+    [SerializeField]
+    private float followDistance;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    private Vector3 newCameraPosition;
+
+    // Update is called once per frame
+    void Update()
+    {
+        UpdateFollowPosition();
+        FollowPlayer();
+    }
+
+    private void UpdateFollowPosition()
+    {
+        newCameraPosition = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, (player.transform.position.z - followDistance));
+    }
+
+    private void FollowPlayer()
+    {
+        gameObject.transform.position = newCameraPosition;
+    }
 }
