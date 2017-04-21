@@ -14,6 +14,10 @@ public class TankMovement : MonoBehaviour
     [SerializeField]
     private float movementSpeed;
     [SerializeField]
+    private float boostSpeed;
+    [SerializeField]
+    private int maxBoosts;
+    [SerializeField]
     private float turnSpeed;
     [SerializeField]
     private float driftTurnSpeed;
@@ -26,6 +30,7 @@ public class TankMovement : MonoBehaviour
     private float triggerInput;
     private float leftStickInput;
     private bool isAccelerating;
+    private int availableBoosts;
     private Vector3 movementVector;
     private Rigidbody myRigidBody;
 
@@ -39,6 +44,7 @@ public class TankMovement : MonoBehaviour
     void Start()
     {
         //gets the rigidbody component, which is used for acceleration and turning
+        ResetAvailableBoosts();
         myRigidBody = GetComponent<Rigidbody>();
     }
 
@@ -72,6 +78,8 @@ public class TankMovement : MonoBehaviour
             //debug statement to check if it's going faster than max speed
             //Debug.Log("Speed is at " + (myRigidBody.velocity.magnitude * milesPerHourConst).ToString());
         }
+
+        Boost();
 
         UpdateIsAccelerating();
 
@@ -108,6 +116,16 @@ public class TankMovement : MonoBehaviour
         }
     }
 
+    private void Boost()
+    {
+        if (availableBoosts > 0 && Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            myRigidBody.AddRelativeForce(movementVector * boostSpeed);
+            availableBoosts--;
+            Debug.Log("I have boosted! " + availableBoosts.ToString() + " left");
+        }
+    }
+
     private void CarAudio()
     {
         if (isAccelerating && engineAudio.isPlaying == false)
@@ -118,5 +136,11 @@ public class TankMovement : MonoBehaviour
         {
             engineAudio.Stop();
         }
+    }
+
+    public void ResetAvailableBoosts()
+    {
+        Debug.Log("Boosts Reset");
+        availableBoosts = maxBoosts;
     }
 }
