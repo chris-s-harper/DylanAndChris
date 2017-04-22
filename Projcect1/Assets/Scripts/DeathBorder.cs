@@ -22,6 +22,7 @@ public class DeathBorder : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             TankDamage playerDamage = other.GetComponent<TankDamage>();
+
             playerDamage.Explode();
             other.gameObject.SetActive(false);
 

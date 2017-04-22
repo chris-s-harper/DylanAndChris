@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 [RequireComponent(typeof(UnityEngine.Rigidbody))]
 public class TankMovement : MonoBehaviour
@@ -11,6 +12,8 @@ public class TankMovement : MonoBehaviour
     private string leftStick;
     [SerializeField]
     private string driftButton;
+    [SerializeField]
+    private string boostButton;
     [SerializeField]
     private float movementSpeed;
     [SerializeField]
@@ -25,6 +28,8 @@ public class TankMovement : MonoBehaviour
     private float maxSpeedInMPH;
     [SerializeField]
     private AudioSource engineAudio;
+    [SerializeField]
+    private ParticleSystem dustParticles;
     #endregion
 
     private float triggerInput;
@@ -33,6 +38,7 @@ public class TankMovement : MonoBehaviour
     private int availableBoosts;
     private Vector3 movementVector;
     private Rigidbody myRigidBody;
+    private WaitForSeconds particleDelay = new WaitForSeconds(1);
 
     #region Constants
     private const float yConstant = 0;
@@ -118,12 +124,20 @@ public class TankMovement : MonoBehaviour
 
     private void Boost()
     {
-        if (availableBoosts > 0 && Input.GetKeyDown(KeyCode.LeftControl))
+        if (availableBoosts > 0 && Input.GetButtonDown(boostButton))
         {
             myRigidBody.AddRelativeForce(movementVector * boostSpeed);
+            StartCoroutine(expandParticleSize());
             availableBoosts--;
             Debug.Log("I have boosted! " + availableBoosts.ToString() + " left");
         }
+    }
+
+    private IEnumerator expandParticleSize()
+    {
+        dustParticles.startSize = dustParticles.startSize * 2;
+        yield return particleDelay;
+        dustParticles.startSize = dustParticles.startSize / 2;
     }
 
     private void CarAudio()

@@ -21,6 +21,12 @@ public class TankDamage : MonoBehaviour
     private AudioSource explosionSound;
     #endregion
 
+    private Rigidbody selfRigidbody;
+
+    void Start()
+    {
+        selfRigidbody = GetComponent<Rigidbody>();
+    }
     // Update is called once per frame
     void Update ()
     {
@@ -40,13 +46,8 @@ public class TankDamage : MonoBehaviour
             launchDirection = -launchDirection.normalized;
 
             LaunchPlayer(playerDamage,collision.relativeVelocity.magnitude,launchDirection,opponentRigidBody);
-            int impactForceInt = (int)collision.relativeVelocity.magnitude;
+            int impactForceInt = (int)(collision.relativeVelocity.magnitude - selfRigidbody.velocity.magnitude);
             TakeDamage(impactForceInt);
-        }
-
-        if (collision.gameObject.tag == "Bullet")
-        {
-            TakeDamage(1);
         }
     }
 
