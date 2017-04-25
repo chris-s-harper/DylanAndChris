@@ -17,10 +17,11 @@ public class DeathBorder : MonoBehaviour
 
     private int deadPlayers = 0;
     private Camera winnerCamera;
+    private GameObject winner;
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "Player")
+        if (other.gameObject.tag == "Player" && winner == null)
         {
             TankDamage playerDamage = other.GetComponent<TankDamage>();
 
@@ -41,8 +42,6 @@ public class DeathBorder : MonoBehaviour
 
     private void updateWinnerText()
     {
-        GameObject winner;
-
         foreach (GameObject player in players)
         {
             if (player.activeSelf)
