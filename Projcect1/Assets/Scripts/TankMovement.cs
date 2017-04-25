@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(UnityEngine.Rigidbody))]
 public class TankMovement : MonoBehaviour
@@ -29,7 +30,11 @@ public class TankMovement : MonoBehaviour
     [SerializeField]
     private AudioSource engineAudio;
     [SerializeField]
+    private AudioSource boostAudio;
+    [SerializeField]
     private ParticleSystem dustParticles;
+    [SerializeField]
+    private Slider boostSlider;
     #endregion
 
     private float triggerInput;
@@ -126,9 +131,11 @@ public class TankMovement : MonoBehaviour
     {
         if (availableBoosts > 0 && Input.GetButtonDown(boostButton))
         {
+            boostAudio.Play();
             myRigidBody.AddRelativeForce(movementVector * boostSpeed);
             StartCoroutine(expandParticleSize());
             availableBoosts--;
+            UpdateBoostSlider();
             Debug.Log("I have boosted! " + availableBoosts.ToString() + " left");
         }
     }
@@ -152,9 +159,15 @@ public class TankMovement : MonoBehaviour
         }
     }
 
+    private void UpdateBoostSlider()
+    {
+        boostSlider.value = availableBoosts;
+    }
+
     public void ResetAvailableBoosts()
     {
         Debug.Log("Boosts Reset");
         availableBoosts = maxBoosts;
+        UpdateBoostSlider();
     }
 }

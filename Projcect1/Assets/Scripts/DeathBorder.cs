@@ -16,6 +16,7 @@ public class DeathBorder : MonoBehaviour
     #endregion
 
     private int deadPlayers = 0;
+    private Camera winnerCamera;
 
     private void OnTriggerExit(Collider other)
     {
@@ -47,6 +48,8 @@ public class DeathBorder : MonoBehaviour
             if (player.activeSelf)
             {
                 winner = player;
+                winnerCamera = GetComponentInChildren<Camera>();
+                //winnerCamera.rect = new Rect(0, 0, 1, 1);
                 winText.text = winner.name + " Wins!";
             }
         }
