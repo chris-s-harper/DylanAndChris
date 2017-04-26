@@ -1,8 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(AudioSource))]
 public class RestoreBoosts : MonoBehaviour
 {
+    private AudioSource pickupSound;
+    void Start()
+    {
+        pickupSound = GetComponent<AudioSource>();
+    }
+
     void FixedUpdate()
     {
         gameObject.transform.Rotate(0, 5, 0,Space.World);
@@ -23,5 +30,10 @@ public class RestoreBoosts : MonoBehaviour
             player.ResetAvailableBoosts();
             Destroy(gameObject);
         }
+    }
+
+    void OnDisable()
+    {
+        pickupSound.Play();
     }
 }

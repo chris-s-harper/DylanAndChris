@@ -10,9 +10,13 @@ public class PowerUpSpawner : MonoBehaviour
     [SerializeField]
     private float maxXDistance;
     [SerializeField]
+    private float maxYDistance;
+    [SerializeField]
     private float minZDistance;
     [SerializeField]
     private float minXDistance;
+    [SerializeField]
+    private float minYDistance;
     [SerializeField]
     private float waitTimeInSeconds;
 
@@ -32,7 +36,8 @@ public class PowerUpSpawner : MonoBehaviour
             yield return waitTime;
             float randomX = Random.Range(minXDistance, maxXDistance);
             float randomZ = Random.Range(minZDistance, maxZDistance);
-            Vector3 spawnLocation = new Vector3(randomX,constYLocation,randomZ);
+            float randomY = Random.Range(minYDistance, maxYDistance);
+            Vector3 spawnLocation = new Vector3(randomX,randomY,randomZ);
             Instantiate(boostPowerup, spawnLocation, boostPowerup.transform.rotation);
         }
     }
